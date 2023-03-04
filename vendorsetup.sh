@@ -35,60 +35,52 @@ if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" ]; then
 fi
 
 if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
+        export OF_USE_GREEN_LED=0
+    	export FOX_ENABLE_APP_MANAGER=1
+    	export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
    	export TW_DEFAULT_LANGUAGE="en"
 	export LC_ALL="C"
  	export ALLOW_MISSING_DEPENDENCIES=true
+	export OF_VIRTUAL_AB_DEVICE=1
 	export TARGET_DEVICE_ALT="lisa,lisa_in,lisa_cn,lisa_global"
 	export OF_TARGET_DEVICES="lisa_in,lisa_cn,lisa_global"
-	export OF_VIRTUAL_AB_DEVICE=1
-	export OF_AB_DEVICE=1
 	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
 	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
-	export OF_USE_GREEN_LED=0
-	export OF_FBE_METADATA_MOUNT_IGNORE=1
-
-	export OF_USE_MAGISKBOOT=1
-	export OF_USE_NEW_MAGISKBOOT=1
 	export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
 	export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
-	export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 	export OF_NO_TREBLE_COMPATIBILITY_CHECK=1
-	export OF_NO_MIUI_PATCH_WARNING=1
 	export FOX_USE_BASH_SHELL=1
 	export FOX_ASH_IS_BASH=1
 	export FOX_USE_TAR_BINARY=1
 	export FOX_USE_SED_BINARY=1
 	export FOX_USE_XZ_UTILS=1
-	export OF_SKIP_MULTIUSER_FOLDERS_BACKUP=1
-    export OF_QUICK_BACKUP_LIST="/boot;/data;"
-	export OF_PATCH_AVB20=1
-    export FOX_DELETE_AROMAFM=1
-    export FOX_BUGGED_AOSP_ARB_WORKAROUND="1546300800"; # Tuesday, January 1, 2019 12:00:00 AM GMT+00:00
-    export FOX_ENABLE_APP_MANAGER=0
-    export FOX_DISABLE_APP_MANAGER=1
+	export OF_ENABLE_LPTOOLS=1
+	export FOX_USE_NANO_EDITOR=1
+    	export OF_QUICK_BACKUP_LIST="/boot;/data;"
+    	export FOX_DELETE_AROMAFM=1
+    	export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
 
-    # OTA
-    export OF_KEEP_DM_VERITY=1
-    export OF_SUPPORT_ALL_BLOCK_OTA_UPDATES=0
-    export OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR=1
-    export OF_DISABLE_MIUI_OTA_BY_DEFAULT=1
-
-	# Screen Settings
+	# screen settings
 	export OF_SCREEN_H=2400
 	export OF_STATUS_H=210
-	export OF_STATUS_INDENT_LEFT=48
-	export OF_STATUS_INDENT_RIGHT=48
-	export OF_CLOCK_POS=1
+	export OF_STATUS_INDENT_LEFT=80
+	export OF_STATUS_INDENT_RIGHT=80
+	export OF_CLOCK_POS=3
 	export OF_HIDE_NOTCH=1
 	export OF_ALLOW_DISABLE_NAVBAR=0
-	
-	# R11.1 Settings
-	export FOX_VERSION="R11.1"
-	export OF_MAINTAINER="Rahul"
-	export FOX_BUILD_TYPE="Beta"
 
-	# Run a Process after Formatting Data to Work-Around MTP Issues
-	export OF_RUN_POST_FORMAT_PROCESS=1
+	# ensure that /sdcard is bind-unmounted before f2fs data repair or format
+	export OF_UNBIND_SDCARD_F2FS=1
+
+	# instruct magiskboot v24+ to always patch the vbmeta header when patching the recovery/boot image; do *not* remove!
+        export OF_PATCH_VBMETA_FLAG="1"
+
+	# no special MIUI stuff
+        export OF_VANILLA_BUILD=1
+        export OF_DISABLE_OTA_MENU=1
+
+	# full size
+	export OF_DYNAMIC_FULL_SIZE=9126805504
 
 	# let's see what are our build VARs
 	if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
@@ -98,4 +90,5 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
   	   export | grep "TW_" >> $FOX_BUILD_LOG_FILE
  	fi
 fi
+#
 #
